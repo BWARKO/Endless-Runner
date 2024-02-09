@@ -16,7 +16,13 @@ let config = {
             debug: true
         }
     },
-    scene: [ Load, Menu, Play ]
+    scene: [ Load, Menu, Play, Gameover ],
 }
 
 let game = new Phaser.Game(config)
+
+// define globals
+let w = game.config.width
+let h = game.config.height
+
+let cursors
