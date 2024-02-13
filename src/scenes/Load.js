@@ -16,7 +16,11 @@ class Load extends Phaser.Scene {
 
         this.load.path = './assets/'
         // load graphics assets
-        this.load.image('heart', 'sprites/heart.png')
+        this.load.spritesheet('heart', 'sprites/heart.png', {
+            frameWidth: 24,
+            frameHeight: 24
+        })
+        this.load.image('4x4', 'sprites/4x4.png')
 
         // load audio assets
         // this.load.audio()
@@ -27,8 +31,13 @@ class Load extends Phaser.Scene {
     }
 
     create() {
-        // check for local storage browser support
-        window.localStorage ? console.log('Local storage supported') : console.log('Local storage not supported')
+        // create anims
+        this.anims.create({
+            key: 'heart-beat',
+            frameRate: 3,
+            repeat: -1,
+            frames: this.anims.generateFrameNames('heart', {start: 0, end: 1})
+        })
 
         // go to Title scene
         this.scene.start('menuScene')

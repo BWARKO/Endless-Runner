@@ -8,7 +8,8 @@ class Menu extends Phaser.Scene {
     }
 
     update() {
-        
+        // goto play scene
+        this.scene.start('playScene')
     }
 
 }
