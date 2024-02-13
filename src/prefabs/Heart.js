@@ -3,7 +3,7 @@ class Heart extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame)
 
         // var/consts
-        this.VELOCITY = 350
+        this.VELOCITY = 600
 
         this.scene = scene
         this.moving = false
@@ -17,10 +17,8 @@ class Heart extends Phaser.Physics.Arcade.Sprite {
         this.body.setSize(this.width/2, this.height/2)
         this.body.setCollideWorldBounds(true)
         this.setDamping(true)
-        this.setBounce(0.5)
-        this.setDrag(0.5)
-        this.setMaxVelocity(400)
-
+        this.setBounce(1)
+        this.setDrag(0.25)
 
         // play anim
         this.anims.play('heart-beat')
@@ -44,11 +42,11 @@ class Heart extends Phaser.Physics.Arcade.Sprite {
     Movement() {
         // handle movement
         if (cursors.left.isDown){
-            this.setAngularVelocity(-250)
+            this.body.setAngularVelocity(-250)
         } else if (cursors.right.isDown){
-            this.setAngularVelocity(250)
+            this.body.setAngularVelocity(250)
         } else {
-            this.setAngularVelocity(0)
+            this.body.setAngularVelocity(0)
         }
 
         if (cursors.up.isDown){
@@ -58,9 +56,8 @@ class Heart extends Phaser.Physics.Arcade.Sprite {
             this.scene.physics.velocityFromRotation(this.rotation + 1.5708, -this.VELOCITY, this.body.acceleration)
             this.moving = true
         } else {
-            this.setAcceleration(0)
+            this.body.setAcceleration(0)
             this.moving = false
-
         }
         // found in phaser documentation examples:
         // https://github.com/phaserjs/examples/blob/master/public/src/physics/arcade/asteroids%20movement.js 
@@ -68,6 +65,7 @@ class Heart extends Phaser.Physics.Arcade.Sprite {
             this.emitter.start()
         } else {
             this.emitter.stop()
+
         }
     }
 }
