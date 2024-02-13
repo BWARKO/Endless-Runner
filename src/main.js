@@ -24,5 +24,6 @@ let game = new Phaser.Game(config)
 // define globals
 let w = game.config.width
 let h = game.config.height
+let difficulty = 1
 
 let cursors

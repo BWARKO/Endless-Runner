@@ -17,6 +17,7 @@ class Heart extends Phaser.Physics.Arcade.Sprite {
         this.body.setSize(this.width/2, this.height/2)
         this.body.setCollideWorldBounds(true)
         this.setDamping(true)
+        this.setBounce(0.5)
         this.setDrag(0.5)
         this.setMaxVelocity(400)
 
@@ -33,10 +34,6 @@ class Heart extends Phaser.Physics.Arcade.Sprite {
         })
         this.emitter.startFollow(this, 0, 0, false)
         this.emitter.depth = -1
-    }
-
-    create() {
-        
     }
 
     update() {

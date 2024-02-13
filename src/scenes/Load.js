@@ -20,6 +20,11 @@ class Load extends Phaser.Scene {
             frameWidth: 24,
             frameHeight: 24
         })
+        this.load.spritesheet('eye', 'sprites/eyeball.png', {
+            frameWidth: 75,
+            frameHeight: 55
+        })
+        this.load.image('scrolling-flesh', 'sprites/scrolling-flesh.png')
         this.load.image('4x4', 'sprites/4x4.png')
 
         // load audio assets
@@ -36,7 +41,19 @@ class Load extends Phaser.Scene {
             key: 'heart-beat',
             frameRate: 3,
             repeat: -1,
-            frames: this.anims.generateFrameNames('heart', {start: 0, end: 1})
+            frames: this.anims.generateFrameNumbers('heart', {start: 0, end: 1})
+        })
+        this.anims.create({
+            key: 'eye-anim',
+            frameRate: 6,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('eye', { frames:
+                                                            [0 ,0, 0, 0, 0, 0, 
+                                                            1, 2, 
+                                                            3, 3, 3, 
+                                                            4, 4, 4,
+                                                            5, 6, 
+                                                            7, 7, 7, 7 ,7 ,7 ]})
         })
 
         // go to Title scene
