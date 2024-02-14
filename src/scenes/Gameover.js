@@ -3,7 +3,6 @@ class Gameover extends Phaser.Scene {
         super("gameoverScene")
 
         this.PADDING = 30
-
     }
 
     create() {
@@ -63,10 +62,12 @@ class Gameover extends Phaser.Scene {
         this.fleshGround2.tilePositionX += 1
 
         if (Phaser.Input.Keyboard.JustDown(spaceKey) && this.yesText.alpha > 0) {
+            this.sound.play('click', { volume: 0.4 })
             this.bgm.stop()
             this.scene.start('playScene')
         }
         if (Phaser.Input.Keyboard.JustDown(escKey) && this.noText.alpha > 0) {
+            this.sound.play('click', { volume: 0.4 })
             this.bgm.stop()
             this.scene.start('menuScene')
         }

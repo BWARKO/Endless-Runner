@@ -10,10 +10,13 @@ class Menu extends Phaser.Scene {
         SFX: zapsplat.com (links embedded)
         Font: Nathan Altice (unless he stole it without creditting)
         `
-        //mus
+        //music:
+        // https://www.zapsplat.com/music/dark-wave-retro-wave-bass-music-loop-seamless-game/
         // sfx:
-        // https://www.zapsplat.com/music/body-hit-impact-with-baseball-bat-or-other-similar-club-hard-whack-with-a-crack-and-squelch-of-blood-version-1/
-        // 
+        // squelch: https://www.zapsplat.com/music/body-hit-impact-with-baseball-bat-or-other-similar-club-hard-whack-with-a-crack-and-squelch-of-blood-version-1/
+        // growl: https://www.zapsplat.com/music/aliencreature-growl-8/
+        // click: https://www.zapsplat.com/music/active-studio-speaker-power-switch-click-3/
+        // chime: https://www.zapsplat.com/music/horror-hit-bell-deep-distant-and-muffled-reverb/
 
     }
 
@@ -58,6 +61,8 @@ class Menu extends Phaser.Scene {
 
 
         if (Phaser.Input.Keyboard.JustDown(spaceKey) && this.playText.alpha > 0) {
+            this.sound.play('click', { volume: 0.4 })
+
             this.startGame = true
 
             this.titleText.setAlpha(0)
@@ -72,6 +77,7 @@ class Menu extends Phaser.Scene {
                 this.scene.start('playScene')
             }, null, this);
         } else if (Phaser.Input.Keyboard.JustDown(escKey)) {
+            this.sound.play('click', { volume: 0.4 })
             if (this.creditsFlag) {
                 this.creditsFlag = false
             } else {
