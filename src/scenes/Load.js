@@ -36,7 +36,7 @@ class Load extends Phaser.Scene {
         // this.load.audio()
 
         // load font
-        // this.load.bitmapFont('gem', 'font/gem.png', 'font/gem.xml')
+        this.load.bitmapFont('gem', 'font/gem.png', 'font/gem.xml')
 
     }
 

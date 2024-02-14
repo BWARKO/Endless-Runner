@@ -36,10 +36,10 @@ class Heart extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         // check movement
-        this.Movement()
+        this.movement()
     }
 
-    Movement() {
+    movement() {
         // handle movement
         if (cursors.left.isDown){
             this.body.setAngularVelocity(-250)
@@ -65,7 +65,19 @@ class Heart extends Phaser.Physics.Arcade.Sprite {
             this.emitter.start()
         } else {
             this.emitter.stop()
-
         }
+    }
+    
+    blowUp() {
+        // explode particles
+        this.setAlpha(0)
+        this.scene.add.particles(0, 0, '4x4', {
+            speed: 50,
+            frequency: 100,
+            scale: { start: 1, end: 3 },
+            alpha: { start: 1, end: 0 },
+            lifespan: 1000,
+            tint:  [ 0x380000, 0x460000, 0x6f0000 ]
+        }).setDepth(-1).explode(75, this.x, this.y)
     }
 }

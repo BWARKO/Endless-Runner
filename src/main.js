@@ -7,6 +7,9 @@ let config = {
     type: Phaser.AUTO,
     width: 1600,
     height: 800,
+    scale: {
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     render: {
         pixelArt: true
     },
@@ -25,5 +28,7 @@ let game = new Phaser.Game(config)
 let w = game.config.width
 let h = game.config.height
 let difficulty = 1
+let highscore = 0
+let newHighscore = false
 
 let cursors

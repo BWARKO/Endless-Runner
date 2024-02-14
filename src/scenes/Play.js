@@ -17,6 +17,17 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.scene.start('gameoverScene')
+        // create texts/cover
+        this.timeText = this.add.bitmapText(w/2, h-160, 'gem', `Time: ${this.gameTime}`, 64).setOrigin(0.5).setTint(0x8b0000).setAlpha(0.2);
+        this.gameOverText = this.add.bitmapText(w/2, h/2, 'gem', `GAME\nOVER`, 128).setOrigin(0.5).setTint(0x460000).setAlpha(0).setDepth(150);
+        this.blackOut = this.add.rectangle(0, 0, w, h, 0x000000).setOrigin(0, 0).setAlpha(0).setDepth(125)
+
+
+
+        // turn debug off intitially
+        this.physics.world.drawDebug = false
+
         // add tilesprites
         this.flesh = this.add.tileSprite(w/2, h/2, 1600, 800, 'scrolling-flesh').setOrigin(0.5).setScale(2).setDepth(-100)
 
@@ -59,14 +70,16 @@ class Play extends Phaser.Scene {
 
 
         //add colliders
-        this.physics.add.collider(this.heart, this.eyes, this.heartCollide, null, this)
+        this.physics.add.collider(this.heart, this.eyes)
+        this.physics.add.collider(this.heart, this.evils, this.heartCollide, null, this)
+        this.physics.add.collider(this.heart, this.fleshGround, this.heartCollide, null, this)
+
+
+        // check body overlaps for eyes
         this.physics.add.overlap(this.eyes, this.eyes, (eyeC1, eyeC2) => {
             eyeC2.reset()
         }, null, this)
-        this.physics.add.overlap(this.heart, this.fleshGround, () => {
-            this.gameOver = true
-            console.log('game over')
-        }, null, this)
+        // destory eyes when collided with evil heart
         this.physics.add.collider(this.evils, this.eyes, (evil, eye) => {
             eye.reset()
         }, null, this)
@@ -86,9 +99,9 @@ class Play extends Phaser.Scene {
             delay: 1000,                // ms
             callback: () => {
                 this.gameTime += 1
-                console.log(this.gameTime)
-                this.rng = Phaser.Math.Between(0, 10)
+                this.timeText.setText(`Time: ${this.gameTime}`)
 
+                this.rng = Phaser.Math.Between(0, 10)
                 if (!this.launchFlag) {
                     this.launchFlag = true
                 } 
@@ -99,6 +112,25 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        // check for game over
+        if (this.gameOver) {
+            this.timer.remove()
+
+            if (this.gameTime > highscore) {
+                highscore = this.gameTime
+                newHighscore = true
+            }
+
+            this.time.delayedCall(2000, () => {
+                this.gameOverText.setAlpha(1)
+                this.blackOut.setAlpha(0.5)
+                this.timeText.setAlpha(0)
+            }, null, this);
+            this.time.delayedCall(5000, () => {
+                this.scene.start('gameoverScene')
+            }, null, this);
+
+        }
         // scrolling 
         this.flesh.tilePositionY -= 1 * difficulty
         if (this.scrollFlag) {
@@ -148,16 +180,35 @@ class Play extends Phaser.Scene {
         }
 
         if (this.launchFlag && this.rng == 1) {
-            console.log('firing launch')
             let eyeNum = Phaser.Math.Between(1,10)
-            let funcString = `this.evil${eyeNum}.launch()`
+            let funcString = `this.evil${eyeNum}`
 
-            eval(funcString)
+            let count = 0
+            let maxCount = 15
+            this.time.addEvent({
+                delay: 300,
+                callback: () => {
+                    if (count >= maxCount) {
+                        eval(`${funcString}.setTint(0xFFFFFF)`)
+                        eval(`${funcString}.launch()`)
+                        count = 0
+                    } else if (count % 2 == 0) {
+                        eval(`${funcString}.setTint(0xFFFFFF)`)
+                    } else {
+                        eval(`${funcString}.setTint(0x8b0000)`)
+                    }
+                    count += 1
+                },
+                callbackScope: this,
+                repeat: maxCount
+            });
+
             this.launchFlag = false
         }
     }
 
     heartCollide() {
-        console.log('collisions with eye')
+        this.heart.blowUp()
+        this.gameOver = true
     }
 }
