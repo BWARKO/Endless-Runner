@@ -9,7 +9,8 @@ class Play extends Phaser.Scene {
     create() {
         // settings
         this.gameTime = 0
-        this.gameOver = false  
+        this.gameOver = false 
+        difficulty = 1
 
         this.rng
         

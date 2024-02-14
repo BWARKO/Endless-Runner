@@ -14,15 +14,6 @@ class Eye extends Phaser.GameObjects.Sprite {
         this.setScale(Phaser.Math.Between(2, 5))
         this.body.setCircle(18,21,11)
         this.body.setImmovable(true)
-
-        // eye particle emitter
-        // this.eyeEmitter = this.scene.add.particles(this.x, this.y, '4x4', {
-        //     speed: 100,
-        //     scale: { start: 1, end: 3 },
-        //     alpha: { start: 1, end: 0 },
-        //     lifespan: 1000,
-        //     tint:  [ 0x380000, 0x460000, 0x6f0000 ]
-        // }).setDepth(-1)
         
         // randomly play anim
         scene.time.delayedCall(Phaser.Math.Between(0, 5000), () => this.anims.play('eye-anim'), null, scene)
