@@ -33,7 +33,13 @@ class Load extends Phaser.Scene {
         this.load.image('4x4', 'sprites/4x4.png')
 
         // load audio assets
-        // this.load.audio()
+        this.load.audio('music', ['audios/music.mp3'])
+        this.load.audio('splat', ['audios/splat.mp3'])
+        this.load.audio('growl', ['audios/growl.mp3'])
+        this.load.audio('click', ['audios/click.mp3'])
+        this.load.audio('chime', ['audios/chime.mp3'])
+
+
 
         // load font
         this.load.bitmapFont('gem', 'font/gem.png', 'font/gem.xml')

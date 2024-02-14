@@ -4,7 +4,10 @@ class Play extends Phaser.Scene {
 
         // vars/consts
         this.PADDING = 80
+    }
 
+    create() {
+        // settings
         this.gameTime = 0
         this.gameOver = false  
 
@@ -14,14 +17,11 @@ class Play extends Phaser.Scene {
         this.scrollFlag = true
         this.launchFlag = false
         this.difficultyFlag = false
-    }
 
-    create() {
-        this.scene.start('gameoverScene')
         // create texts/cover
+        this.blackOut = this.add.rectangle(0, 0, w, h, 0x000000).setOrigin(0, 0).setAlpha(0).setDepth(125)
         this.timeText = this.add.bitmapText(w/2, h-160, 'gem', `Time: ${this.gameTime}`, 64).setOrigin(0.5).setTint(0x8b0000).setAlpha(0.2);
         this.gameOverText = this.add.bitmapText(w/2, h/2, 'gem', `GAME\nOVER`, 128).setOrigin(0.5).setTint(0x460000).setAlpha(0).setDepth(150);
-        this.blackOut = this.add.rectangle(0, 0, w, h, 0x000000).setOrigin(0, 0).setAlpha(0).setDepth(125)
 
 
 
@@ -34,7 +34,8 @@ class Play extends Phaser.Scene {
         this.fleshGround = this.add.tileSprite(w/2, h - 25, 1600, 200, 'flesh').setOrigin(0.5)
         this.physics.add.existing(this.fleshGround)
         this.fleshGround.body.setSize(w, this.fleshGround.height/2)
-        this.fleshGround.depth = 75
+        this.fleshGround.setDepth(75)
+        this.fleshGround.body.setImmovable(true)
 
         // add heart (player)
         this.heart = new Heart(this, w/2, h/2, 'heart', 0).setCircle(6)
@@ -53,7 +54,7 @@ class Play extends Phaser.Scene {
         // group eyes
         this.eyes = this.add.group([this.eye1, this.eye2, this.eye3, this.eye4, this.eye5, this.eye6, this.eye7, this.eye8, this.eye9, this.eye10])
 
-        // add evil hearts
+        // add evil hearts >:{}
         this.evil1 = new EvilHeart(this, 1600 * 1/10 - this.PADDING, h - 50, 'evil-heart').setOrigin(0.5)
         this.evil2 = new EvilHeart(this, 1600 * 2/10 - this.PADDING, h - 50, 'evil-heart').setOrigin(0.5)
         this.evil3 = new EvilHeart(this, 1600 * 3/10 - this.PADDING, h - 50, 'evil-heart').setOrigin(0.5)
@@ -81,6 +82,7 @@ class Play extends Phaser.Scene {
         }, null, this)
         // destory eyes when collided with evil heart
         this.physics.add.collider(this.evils, this.eyes, (evil, eye) => {
+            this.sound.play('splat', { volume: 0.1 })
             eye.reset()
         }, null, this)
 
@@ -94,21 +96,29 @@ class Play extends Phaser.Scene {
             this.physics.world.debugGraphic.clear()
         }, this)
 
-        // timers
+        // game timer
         this.timer = this.time.addEvent({
-            delay: 1000,                // ms
+            delay: 1000,                
             callback: () => {
+                console.log('tick')
                 this.gameTime += 1
                 this.timeText.setText(`Time: ${this.gameTime}`)
-
+                
                 this.rng = Phaser.Math.Between(0, 10)
-                if (!this.launchFlag) {
-                    this.launchFlag = true
-                } 
+                this.launchFlag = true
             },
             callbackScope: this,
             loop: true
         });
+
+        // play music
+        this.bgm = this.sound.add('music', { 
+            mute: false,
+            volume: 0.05,
+            rate: 0.5,
+            loop: true 
+        });
+        this.bgm.play();
     }
 
     update() {
@@ -127,6 +137,7 @@ class Play extends Phaser.Scene {
                 this.timeText.setAlpha(0)
             }, null, this);
             this.time.delayedCall(5000, () => {
+                this.bgm.stop()
                 this.scene.start('gameoverScene')
             }, null, this);
 
@@ -174,7 +185,7 @@ class Play extends Phaser.Scene {
 
         if (this.gameTime % 15 == 0 && this.gameTime != 0 && !this.difficultyFlag) {
             this.difficultyFlag = true
-            difficulty += 0.1
+            difficulty += 0.25
         } else if (!(this.gameTime % 3 == 0)) {
             this.difficultyFlag = false
         }
@@ -194,8 +205,10 @@ class Play extends Phaser.Scene {
                         count = 0
                     } else if (count % 2 == 0) {
                         eval(`${funcString}.setTint(0xFFFFFF)`)
+                        eval(`${funcString}.y += 30`)
                     } else {
-                        eval(`${funcString}.setTint(0x8b0000)`)
+                        eval(`${funcString}.setTint(0xFF0000)`)
+                        eval(`${funcString}.y -= 30`)
                     }
                     count += 1
                 },
@@ -208,7 +221,8 @@ class Play extends Phaser.Scene {
     }
 
     heartCollide() {
+        this.heart.body.destroy()
         this.heart.blowUp()
-        this.gameOver = true
+        this.gameOver = true 
     }
 }

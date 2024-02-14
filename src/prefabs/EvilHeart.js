@@ -30,6 +30,7 @@ class EvilHeart extends Phaser.GameObjects.Sprite {
     }
 
     launch() {
+        this.scene.sound.play('growl', { volume: 0.5 })
         this.body.setVelocityY(-200 * difficulty)
     }
 

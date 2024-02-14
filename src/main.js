@@ -32,3 +32,5 @@ let highscore = 0
 let newHighscore = false
 
 let cursors
+let spaceKey
+let escKey

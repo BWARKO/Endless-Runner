@@ -69,6 +69,8 @@ class Heart extends Phaser.Physics.Arcade.Sprite {
     }
     
     blowUp() {
+        this.scene.sound.play('splat', { volume: 0.4 })
+
         // explode particles
         this.setAlpha(0)
         this.scene.add.particles(0, 0, '4x4', {
