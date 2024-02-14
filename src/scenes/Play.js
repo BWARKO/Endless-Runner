@@ -184,7 +184,7 @@ class Play extends Phaser.Scene {
             this.scrollFlag = false
         }
 
-        if (this.gameTime % 15 == 0 && this.gameTime != 0 && !this.difficultyFlag) {
+        if (this.gameTime % 10 == 0 && this.gameTime != 0 && !this.difficultyFlag) {
             this.difficultyFlag = true
             difficulty += 0.25
         } else if (!(this.gameTime % 3 == 0)) {
