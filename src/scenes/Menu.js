@@ -6,8 +6,8 @@ class Menu extends Phaser.Scene {
         this.CREDITS = 
         `
         Development: Blake Warkenton \n
-        Music: \n
-        SFX: zapsplat.com (links embedded)
+        Music: zapsplat\n
+        SFX: zapsplat.com (links embedded)\n
         Font: Nathan Altice (unless he stole it without creditting)
         `
         //music:
