@@ -101,7 +101,6 @@ class Play extends Phaser.Scene {
         this.timer = this.time.addEvent({
             delay: 1000,                
             callback: () => {
-                console.log('tick')
                 this.gameTime += 1
                 this.timeText.setText(`Time: ${this.gameTime}`)
                 
@@ -187,7 +186,7 @@ class Play extends Phaser.Scene {
         if (this.gameTime % 10 == 0 && this.gameTime != 0 && !this.difficultyFlag) {
             this.difficultyFlag = true
             difficulty += 0.25
-        } else if (!(this.gameTime % 3 == 0)) {
+        } else if (!(this.gameTime % 10 == 0)) {
             this.difficultyFlag = false
         }
 
